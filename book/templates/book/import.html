@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %}Import{% endblock %}
+
+{% block content %}
+{% if amount_new_book %}
+<div class="alert alert-secondary" role="alert">
+    <h1 class="display-3">Imported {{ amount_new_book }} books</h1>
+</div>
+{% endif %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <form method="POST">
+                {% csrf_token %}
+                {{ forms.as_p }}
+                <input class="btn btn-secondary" type="submit" value="Save">
+            </form>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}

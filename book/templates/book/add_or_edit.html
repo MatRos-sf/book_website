@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+
+{% block title %}Add or Edit{% endblock %}
+
+{% block content %}
+{% if info_error %}
+<div class="alert alert-secondary" role="alert">
+    <h1 class="display-3">Error!</h1>
+    <h1> {{ info_error }}</h1>
+</div>
+{% endif %}
+
+{% if info %}
+<div class="alert alert-secondary" role="alert">
+    <h1 class="display-3">Well done!</h1>
+    You changed or add:
+    {% for i in info %}
+    <p class="lead">{{ i }}</p>
+    {% endfor %}
+    <p class="mb-0">If you want go back home click this
+        <a href="{% url 'home' %}" class="alert-link">link</a>.</p>
+</div>
+{% endif %}
+
+{% if edit %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-6 col-md-5 col-lg-6">
+            <form method="post">
+                {% csrf_token %}
+                {% for i in forms %}
+                <p>{{ i.label }}</p>
+                {% if i.label == 'Authors' %}
+                {% endif %}
+                <p>{{ i }}</p>
+                {% endfor %}
+                <input class="btn btn-secondary" type="submit" value="Save">
+            </form>
+
+        </div>
+        <div class="col-sm-6 col-md-5 offset-md-2 col-lg-6 offset-lg-0">
+            <center>
+                <h1 class="display-3">Current date:</h1>
+                <p class="lead">Title: {{ detail_book.title }}</p>
+                <p class="lead">authors:
+                    {% for author in detail_book.authors.all %}
+                    {{ author }}
+                    {% endfor %}</p>
+                <p class="lead">publishedDate: {{ detail_book.publishedDate }}</p>
+                <p class="lead">ISBN: {{ detail_book.ISBN }}</p>
+                <p class="lead">pageCount: {{ detail_book.pageCount }}</p>
+                <p class="lead">language: {{ detail_book.language }}</p>
+                <p class="lead">link: {{ detail_book.previewLink }}</p>
+            </center>
+        </div>
+    </div>
+</div>
+
+{% else %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <form method="POST">
+                {% csrf_token %}
+
+                {% for i in forms %}
+                <p>{{ i.label }}</p>
+                <p>{{ i }}</p>
+                {% endfor %}
+                <input class="btn btn-secondary" type="submit" value="Save">
+            </form>
+            {% for error in forms.non_field_errors %}
+            <p>{{ error }}</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endif %}
+
+{% endblock %}

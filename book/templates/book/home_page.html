@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<div class="container">
+    <!-- Stack the columns on mobile by making one full-width and the other half-width -->
+    <div class="row">
+        <div class="col-md-8"><h1>Books</h1>
+            {% for book in books %}
+            <table class="table">
+
+                <tbody>
+                <tr>
+                    <td>
+                        <h1 class="fs-2">{{ book.title }}</h1>
+                        <p class="fw-normal fst-italic">
+                            {% for author in book.authors.all %}
+                            {{ author }}
+                            {% endfor %}
+                        </p>
+
+                        <!-- Public ISBN -->
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-sm-5 col-md-6">ISBN: {{ book.ISBN }}</div>
+                                <div class="col-sm-5 offset-sm-2 col-md-6 offset-md-0">Publish year: {{book.publishedDate}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-sm-5 col-md-6">Page count: {{ book.pageCount }}</div>
+                                <div class="col-sm-5 offset-sm-2 col-md-6 offset-md-0">Language: {{ book.language }}
+                                </div>
+                            </div>
+                        </div>
+                        <p class="text-muted">
+                            Cover: <a href={{ book.previewLink }} class="text-reset">{{ book.title }}</a>
+                        </p>
+                        <p class="text-muted">
+                            <a href="{% url 'edit' book.id %}" class="text-reset">Edit</a>
+                        </p>
+                    </td>
+                </tr>
+                </tbody>
+
+            </table>
+            {% endfor %}
+        </div>
+        <div class="col-6 col-md-4">Search
+            <form class="d-flex" method="GET">
+                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name='q'
+                       value='{{ request.GET.q }}'>
+                <input class="form-control me-2" type="search" placeholder="From-To" aria-label="From-To" name='from_to'
+                       value='{{ request.GET.from_to }}'>
+                <button class="btn btn-outline-success" type="submit">Search</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
